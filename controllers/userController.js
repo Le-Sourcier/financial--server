@@ -1,31 +1,27 @@
-const Joi = require("joi");
+const { sequelize } = require("../db");
 
-const registerValidator = async (req, res, next) => {
-  try {
-    await Joi.object({
-      phone: Joi.number().required(),
-      lastname: Joi.string().required(),
-      firstname: Joi.string().required(),
-      address: Joi.string().required(),
-    }).validateAsync(req.body);
-    return next();
-  } catch (error) {
-    console.log("error in registervalidator");
-    return next(error);
-  }
+//add new user
+const addUser = async (data) => {
+  return await sequelize.models.Users.create({
+    firstname: data.firstname,
+    lastname: data.lastname,
+    phone: data.phone,
+    password: data.password,
+  });
 };
 
-const loginValidator = async (req, res, next) => {
-  try {
-    await Joi.object({
-      phone: Joi.number().required(),
-      password: Joi.string().required(),
-    }).validateAsync(req.body);
-    return next();
-  } catch (error) {
-    console.log("error in loginvalidator");
-    return next(error);
-  }
+//check an existante user
+const checkUser = async ({ phone }) => {
+  const users = await sequelize.models.Users.findAll({
+    where: { phone: phone },
+  });
+
+  return users.length == 1;
 };
 
-module.exports = { loginValidator, registerValidator };
+//find user by phone number
+const getUser = async (data) => {
+  return await sequelize.models.Users.findOne({ where: { phone: data.phone } });
+};
+
+module.exports = { checkUser, addUser, getUser };

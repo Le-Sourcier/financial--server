@@ -1,0 +1,6 @@
+{
+    "npm-intellisense.packageSubfoldersIntellisense": true,
+    "npm-intellisense.importQuotes": "'",
+    "npm-intellisense.scanDevDependencies": true,
+    "npm-intellisense.showBuildInLibs": true
+}
