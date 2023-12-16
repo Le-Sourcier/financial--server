@@ -18,9 +18,7 @@ const registerValidator = async (req, res, next) => {
 const loginValidator = async (req, res, next) => {
   try {
     await Joi.object({
-      phone: Joi.string().required().email().rule({
-        message: "phone Invalid",
-      }),
+      phone: Joi.number().required(),
       password: Joi.string().required(),
     }).validateAsync(req.body);
     return next();
