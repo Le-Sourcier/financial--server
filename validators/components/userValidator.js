@@ -8,7 +8,9 @@ const registerValidator = async (req, res, next) => {
       firstname: Joi.string().required(),
       password: Joi.string().required(),
       // address: Joi.string().required(),
-    }).validateAsync(req.body);
+    })
+      .unknown(true) // This will disallow any additional fields
+      .validateAsync(req.body);
     return next();
   } catch (error) {
     console.log("error in registervalidator");
@@ -19,9 +21,11 @@ const registerValidator = async (req, res, next) => {
 const loginValidator = async (req, res, next) => {
   try {
     await Joi.object({
-      phone: Joi.number().required(),
+      phone: Joi.string().required(),
       password: Joi.string().required(),
-    }).validateAsync(req.body);
+    })
+      .unknown(true) // This will disallow any additional fields
+      .validateAsync(req.body);
     return next();
   } catch (error) {
     console.log("error in loginvalidator");

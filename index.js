@@ -9,12 +9,12 @@ app.use(cors()); //For Cross Origin Resource Sharing
 app.use(bodyParser.json());
 
 //#################
-//Base de donnés et Models
+//Database and Models
 require("./db")
   .initiate()
   .then(() => {
     try {
-      require("./models/components/models").initModels();
+      require("./models").initModels();
     } catch (error) {
       console.log({ error });
     }

@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const { generateToken, generateUID } = require("./../../helpers/helpers");
 
 module.exports = (sequelize) => {
-  const User = sequelize.define("Users", {
+  const Admins = sequelize.define("Admins", {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
@@ -39,13 +39,19 @@ module.exports = (sequelize) => {
       defaultValue: generateToken,
       unique: true,
     },
-    // Add more attributes as needed
+
+    status: {
+      type: DataTypes.ENUM,
+      defaultValue: "ADMIN",
+      allowNull: false,
+      values: ["ADMIN", "MODERATOR"],
+    },
   });
 
   // Hook to hash the password and set user ID before creating or updating a user
-  User.beforeCreate(async (user) => {
-    user.password = await bcrypt.hash(user.password, 10);
+  Admins.beforeCreate(async (admin) => {
+    admin.password = await bcrypt.hash(admin.password, 10);
   });
 
-  return User;
+  return Admins;
 };

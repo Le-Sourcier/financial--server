@@ -28,10 +28,22 @@ const serverMessage = (key, data = []) => {
       message = "MISSING_PASSWORD";
       break;
 
+    case "WRONG_PASSWORD":
+      error = true;
+      status = 406;
+      message = "WRONG_PASSWORD";
+      break;
+
     case "USER_EXIST":
       error = true;
       status = 401;
       message = "USER_ALREADY_EXIST";
+      break;
+
+    case "ADMIN_EXIST":
+      error = true;
+      status = 401;
+      message = "ADMIN_ALREADY_EXIST";
       break;
 
     case "REGISTRATION_FAILD":
@@ -40,10 +52,52 @@ const serverMessage = (key, data = []) => {
       message = "USER_REGISTRATION_FAILD";
       break;
 
+    case "AUTH_FAILED":
+      error = true;
+      status = 417;
+      message = "USER_NOT_FOUND";
+      break;
+
     case "REGISTRED":
       error = false;
       status = 200;
-      message = "SUCESSFYLLY_REGISTRED";
+      message = "SUCCESSFUL_REGISTRATION";
+      break;
+
+    case "LOGIN":
+      error = false;
+      status = 200;
+      message = "SUCCESSFULLY_AUTHENTICATED";
+      break;
+
+    case "FAILED_DELETTION":
+      error = true;
+      status = 417;
+      message = "DELETTION_REQUEST_FAILED";
+      break;
+
+    case "DELETED":
+      error = false;
+      status = 200;
+      message = "SUCCESSFULLY_DELETED";
+      break;
+
+    case "AUTHORIZED":
+      error = false;
+      status = 200;
+      message = "SUCCESS";
+      break;
+
+    case "NOT_AUTHORIZED":
+      error = true;
+      status = 401;
+      message = "NOT_AUTHORIZED_REQUEST";
+      break;
+
+    case "ACCESS_DENIED":
+      error = true;
+      status = 401;
+      message = "ACCESS_DENIED";
       break;
 
     case "ERROR_SERVER":

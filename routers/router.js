@@ -1,8 +1,9 @@
 require("dotenv").config();
 
-const userRouter = require("./components/userRouter");
-const loanRouter = require("./components/loanRouter");
+const userRouter = require("./components/userRoute");
+const loanRouter = require("./components/loanRoute");
+const adminRouter = require("./components/adminRoute");
 
-const router = [userRouter, loanRouter];
+const router = [userRouter, loanRouter, adminRouter];
 
 module.exports = router;
