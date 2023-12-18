@@ -42,9 +42,9 @@ module.exports = (sequelize) => {
 
     status: {
       type: DataTypes.ENUM,
-      defaultValue: "ADMIN",
+      defaultValue: "SUPER_ADMIN",
       allowNull: false,
-      values: ["ADMIN", "MODERATOR"],
+      values: ["SUPER_ADMIN", "ADMIN", "MODERATOR"],
     },
   });
 

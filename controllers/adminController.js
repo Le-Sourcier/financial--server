@@ -46,14 +46,60 @@ const getAminByIdAndTk = async (data) => {
   }
 };
 
-//Promte admin as admin
-const promoteAdmin = async (data) => {
+//Promte user as admin
+const promoteToAdminOrModerator = async (data) => {
   try {
-  } catch (error) {}
+    // Check permissions or other requirements if necessary
+
+    // Retrieve user data from the Users table
+    const user = await sequelize.models.Users.findByPk(data.u_id);
+
+    if (user) {
+      // Create a new record in the Admins table
+      await sequelize.models.Admins.create({
+        id: user.id,
+        token: user.token,
+        lastname: user.lastname,
+        firstname: user.firstname,
+        phone: user.phone,
+        password: user.password,
+        status: data.status, // Set the role to "ADMIN" or "MODERATOR"
+      });
+
+      // Delete the user record from the Users table
+      await sequelize.models.Users.destroy({
+        where: { id: user.id },
+      });
+
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Erreur dans promoteToAdminOrModerator:", error);
+    return false;
+  }
 };
 
-//Promte user as moderator
-const promoteModerator = async () => {};
+//Promte Moderator to Admin
+const promoteModeratorToAdmin = async (data) => {
+  try {
+    const isModerator = await sequelize.models.Admins.findByPk(data.m_id);
+    if (isModerator && isModerator.status === "MODERATOR") {
+      return await sequelize.models.Admins.update(
+        { status: "ADMIN" },
+
+        {
+          where: { id: isModerator.id },
+        }
+      );
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+};
 
 //revoke as moderator title
 const revokeModerator = async (data) => {
@@ -194,7 +240,7 @@ module.exports = {
   getAminByIdAndTk,
   deleteAmin,
   revokeAdmin,
-  promoteAdmin,
-  promoteModerator,
+  promoteToAdminOrModerator,
+  promoteModeratorToAdmin,
   revokeModerator,
 };

@@ -14,6 +14,7 @@ const {
 
 const { sequelize } = require("../../db");
 const { Sequelize } = require("sequelize");
+const { checkAdmin } = require("../../controllers/adminController");
 
 //Registration router
 router
@@ -46,10 +47,11 @@ router
       }
 
       // Check if user is already registred with this phone number
-      let isExistUser = await checkUser(req.body);
+      let isUserExist = await checkUser(req.body);
+      let isDataExist = await checkAdmin(req.body);
 
-      if (isExistUser) {
-        const message = serverMessage("USER_EXIST");
+      if (isUserExist || isDataExist) {
+        const message = serverMessage("PHONE_EXIST");
 
         return res.status(401).json(message);
       }

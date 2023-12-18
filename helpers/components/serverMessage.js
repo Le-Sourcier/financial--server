@@ -40,6 +40,12 @@ const serverMessage = (key, data = []) => {
       message = "USER_ALREADY_EXIST";
       break;
 
+    case "PHONE_EXIST":
+      error = true;
+      status = 401;
+      message = "PHONE_NUMBER_ALREADY_TAKED";
+      break;
+
     case "ADMIN_EXIST":
       error = true;
       status = 401;
@@ -83,6 +89,7 @@ const serverMessage = (key, data = []) => {
       break;
 
     case "AUTHORIZED":
+    case "SUCCESS":
       error = false;
       status = 200;
       message = "SUCCESS";

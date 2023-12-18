@@ -5,7 +5,7 @@ const router = express.Router();
 
 const { serverMessage } = require("../../helpers/helpers");
 
-const { getAllUser } = require("../../controllers/userController");
+const { getAllUser, checkUser } = require("../../controllers/userController");
 
 const { sequelize } = require("../../db");
 const { Sequelize } = require("sequelize");
@@ -17,6 +17,8 @@ const {
   getAminByIdAndTk,
   deleteAmin,
   authAdmin,
+  promoteToAdminOrModerator,
+  promoteModeratorToAdmin,
 } = require("../../controllers/adminController");
 
 //Admin registration router
@@ -50,10 +52,11 @@ router
       }
 
       // Check if admin is already registred with this phone number
-      let isExistUser = await checkAdmin(req.body);
+      let isAdminExist = await checkAdmin(req.body);
+      let isUserExist = await checkUser(req.body);
 
-      if (isExistUser) {
-        const message = serverMessage("ADMIN_EXIST");
+      if (isAdminExist || isUserExist) {
+        const message = serverMessage("PHONE_EXIST");
 
         return res.status(401).json(message);
       }
@@ -127,6 +130,92 @@ router
       return res.status(500).json(message);
     }
   })
+  //Promote moderator to admin
+  .post("/promote/:token", async (req, res, next) => {
+    //Get the admin token
+    const token = req.params.token;
+    //Get user ID
+    const m_id = req.body.m_id;
+    //Get promotion status (MODERATOR or ADMIN)
+    const status = req.body.status;
+    //Get admin id
+    const id = req.body.id;
+
+    try {
+      if (!token || !m_id || !status || !id) {
+        const message = serverMessage("NOT_AUTHORIZED");
+        return res.status(401).json(message);
+      }
+      //check if it's admin
+      const admin = await getAminByIdAndTk({ id, token });
+
+      if (!admin) {
+        const message = serverMessage("ACCESS_DENIED");
+        return res.status(401).json(message);
+      }
+
+      const promoteUser = await promoteModeratorToAdmin({ m_id });
+      if (!promoteUser) {
+        return res.status(401).json({
+          error: true,
+          status: 401,
+          message: "ERROR_IN MODERATOR_PROMOTION",
+          data: [],
+        });
+      } else {
+        const message = serverMessage("SUCCESS");
+        return res.status(200).json(message);
+      }
+    } catch (error) {
+      const message = serverMessage("ERROR_SERVER");
+      console.log("Error in promoting moderator : ", error);
+      return res.status(200).json(message);
+    }
+  })
+  //Promote user to admin or moderator
+  .post("/promote/:token", async (req, res, next) => {
+    //Get the admin token
+    const token = req.params.token;
+    //Get user ID
+    const u_id = req.body.u_id;
+    //Get promotion status (MODERATOR or ADMIN)
+    const status = req.body.status;
+    //Get admin id
+    const id = req.body.id;
+
+    console.log(status);
+
+    try {
+      if (!token || !u_id || !status || !id) {
+        const message = serverMessage("NOT_AUTHORIZED");
+        return res.status(401).json(message);
+      }
+      //check if it's admin
+      const admin = await getAminByIdAndTk({ id, token });
+
+      if (!admin) {
+        const message = serverMessage("ACCESS_DENIED");
+        return res.status(401).json(message);
+      }
+      const promoteUser = await promoteToAdminOrModerator({ u_id, status });
+      if (!promoteUser) {
+        // const message = serverMessage("ACCESS_DENIED");
+        return res.status(401).json({
+          error: true,
+          status: 401,
+          message: "ERROR_IN USER_PROMOTION",
+          data: [],
+        });
+      } else {
+        const message = serverMessage("SUCCESS");
+        return res.status(200).json(message);
+      }
+    } catch (error) {
+      const message = serverMessage("ERROR_SERVER");
+      console.log("Error in promoting user : ", error);
+      return res.status(200).json(message);
+    }
+  })
   //delete admin or moderator
   .delete("/delete/:token", async (req, res, next) => {
     const token = req.params.token;
@@ -138,11 +227,11 @@ router
         return res.status(401).json(message);
       }
 
-      const user = await getAminByIdAndTk({ id, token });
+      const admin = await getAminByIdAndTk({ id, token });
 
-      if (!user) {
-        const message = serverMessage("AUTH_FAILED");
-        return res.status(417).json(message);
+      if (!admin) {
+        const message = serverMessage("ACCESS_DENIED");
+        return res.status(401).json(message);
       }
 
       const _ = await deleteAmin({ id, token });
@@ -187,7 +276,6 @@ router
       return res.status(401).json(message);
     }
   })
-
   .post("/createTable", async (req, res) => {
     const { tableName, columns } = req.body;
 
