@@ -82,10 +82,34 @@ const serverMessage = (key, data = []) => {
       message = "DELETTION_REQUEST_FAILED";
       break;
 
+    case "PROMOTION_ERROR":
+      error = true;
+      status = 401;
+      message = "ERROR_IN_USER_PROMOTION";
+      break;
+
+    case "PROMOTED":
+      error = false;
+      status = 401;
+      message = "USER_HAS_BEEN_PROMOTED";
+      break;
+
     case "DELETED":
       error = false;
       status = 200;
       message = "SUCCESSFULLY_DELETED";
+      break;
+
+    case "REVOCATION_FAILED":
+      error = true;
+      status = 401;
+      message = "REVOCATION_OPPERATION_FAILED";
+      break;
+
+    case "REVOKED":
+      error = false;
+      status = 401;
+      message = "USER_HAS_BEEN_REVOKED";
       break;
 
     case "AUTHORIZED":

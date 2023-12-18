@@ -19,6 +19,7 @@ const {
   authAdmin,
   promoteToAdminOrModerator,
   promoteModeratorToAdmin,
+  revokeModerator,
 } = require("../../controllers/adminController");
 
 //Admin registration router
@@ -172,6 +173,29 @@ router
       return res.status(200).json(message);
     }
   })
+  //Revoke moderator
+  .post("/revoke/:token", async (req, res, next) => {
+    const token = req.params.token; //Admin token
+    const id = req.body.id; //Admin ID
+    const { m_id } = req.body; //Moderator ID
+    try {
+      if (!token || !id || !m_id) {
+      }
+      const isAdmin = await getAminByIdAndTk({ id, token });
+      if (!isAdmin) {
+        const message = serverMessage("ACCESS_DENIED");
+        return res.status(401).json(message);
+      }
+      const isVevoked = await revokeModerator({ m_id });
+      if (!isVevoked) {
+        const message = serverMessage("REVOCATION_FAILED");
+        return res.status(401).json(message);
+      }
+      const message = serverMessage("REVOKED");
+
+      return res.status(200).json(message);
+    } catch (error) {}
+  })
   //Promote user to admin or moderator
   .post("/promote/:token", async (req, res, next) => {
     //Get the admin token
@@ -199,15 +223,10 @@ router
       }
       const promoteUser = await promoteToAdminOrModerator({ u_id, status });
       if (!promoteUser) {
-        // const message = serverMessage("ACCESS_DENIED");
-        return res.status(401).json({
-          error: true,
-          status: 401,
-          message: "ERROR_IN USER_PROMOTION",
-          data: [],
-        });
+        const message = serverMessage("PROMOTION_ERROR");
+        return res.status(401).json(message);
       } else {
-        const message = serverMessage("SUCCESS");
+        const message = serverMessage("PROMOTED");
         return res.status(200).json(message);
       }
     } catch (error) {

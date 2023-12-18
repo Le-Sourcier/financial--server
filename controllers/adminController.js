@@ -105,11 +105,9 @@ const promoteModeratorToAdmin = async (data) => {
 const revokeModerator = async (data) => {
   try {
     // Validate user credentials and check if the user is a moderator
-    const moderator = await sequelize.models.Admins.findOne({
-      where: { id: data.id, token: data.token, status: "MODERATOR" },
-    });
+    const moderator = await sequelize.models.Admins.findByPk(data.m_id);
 
-    if (moderator) {
+    if (moderator && moderator.status === "MODERATOR") {
       // Ensure the ID and token are valid before proceeding with the deletion
       const isValidIdAndToken = await sequelize.models.Admins.findOne({
         where: { id: moderator.id, token: moderator.token },
@@ -123,7 +121,13 @@ const revokeModerator = async (data) => {
 
         if (existingUser) {
           // User already exists in the Users table
-          return false;
+          console.log("Hey");
+          // Revoke moderator status by deleting the user record from the Admins table
+          return await sequelize.models.Admins.destroy({
+            where: { id: moderator.id, token: moderator.token },
+          });
+
+          // return false;
         }
 
         // Transfer moderator data to the Users table
