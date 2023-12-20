@@ -1,12 +1,18 @@
-const bcrypt = require("bcrypt");
 const { sequelize } = require("../db");
 
-//add new user
 const addLoan = async (data) => {
+  // Check if the borrower (user) exists in the database
+  const borrowerId = await sequelize.models.Users.findByPk(data.borrower_id);
+
+  // If the borrower does not exist, return false
+  if (!borrowerId) {
+    return false;
+  }
+
+  // Create a new loan record in the Loans table
   return await sequelize.models.Loans.create({
-    amount: data.amount,
-    interestRate: data.interestRate,
-    durationMonths: data.durationMonths,
+    borrower_id: data.borrower_id, // Borrower identifier associated with the loan
+    loan_amount: data.loan_amount, // Total amount of the loan
   });
 };
 

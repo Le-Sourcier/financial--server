@@ -28,6 +28,12 @@ const serverMessage = (key, data = []) => {
       message = "MISSING_PASSWORD";
       break;
 
+    case "EMPTY_FIELD":
+      error = true;
+      status = 400;
+      message = "FIELD_ARE_REQUIRED";
+      break;
+
     case "WRONG_PASSWORD":
       error = true;
       status = 406;
@@ -119,6 +125,12 @@ const serverMessage = (key, data = []) => {
       message = "SUCCESS";
       break;
 
+    case "REQUEST_LOAN":
+      error = true;
+      status = 401;
+      message = "LOAN_NOT_AUTHORIZED_AT_THE_MOMENT";
+      break;
+
     case "NOT_AUTHORIZED":
       error = true;
       status = 401;
@@ -129,6 +141,18 @@ const serverMessage = (key, data = []) => {
       error = true;
       status = 401;
       message = "ACCESS_DENIED";
+      break;
+
+    case "ERROR_LOAN":
+      error = true;
+      status = 401;
+      message = "LOAN_ADDING_FAILD";
+      break;
+
+    case "LOAN_ADDED":
+      error = false;
+      status = 201;
+      message = "LOAN_ADDED_SUCCESSFULLY";
       break;
 
     case "ERROR_SERVER":

@@ -3,28 +3,43 @@ const { sequelize } = require("../db");
 
 //add new user
 const addNewAdmin = async (data) => {
-  return await sequelize.models.Admins.create({
-    firstname: data.firstname,
-    lastname: data.lastname,
-    phone: data.phone,
-    password: data.password,
-  });
+  try {
+    return await sequelize.models.Admins.create({
+      firstname: data.firstname,
+      lastname: data.lastname,
+      phone: data.phone,
+      password: data.password,
+    });
+  } catch (error) {
+    console.log("Error in registredNewAdmin");
+    return;
+  }
 };
 
 //check an existante user
 const checkAdmin = async ({ phone }) => {
-  const admins = await sequelize.models.Admins.findAll({
-    where: { phone: phone },
-  });
+  try {
+    const admins = await sequelize.models.Admins.findAll({
+      where: { phone: phone },
+    });
 
-  return admins.length == 1;
+    return admins.length == 1;
+  } catch (error) {
+    console.log("Error in checkingAdmin");
+    return;
+  }
 };
 
 //find admin by phone number
 const getAdmin = async (data) => {
-  return await sequelize.models.Admins.findOne({
-    where: { phone: data.phone },
-  });
+  try {
+    return await sequelize.models.Admins.findOne({
+      where: { phone: data.phone },
+    });
+  } catch (error) {
+    console.log("Error in gettingAdmin");
+    return;
+  }
 };
 
 //Get admin by id and token (for a security reason, it important to include user Token)
@@ -42,6 +57,7 @@ const getAminByIdAndTk = async (data) => {
       return false;
     }
   } catch (error) {
+    console.log("Error in gettingAdminByIdAndToken:", error);
     return false;
   }
 };
@@ -76,7 +92,7 @@ const promoteToAdminOrModerator = async (data) => {
       return false;
     }
   } catch (error) {
-    console.error("Erreur dans promoteToAdminOrModerator:", error);
+    console.log("Erreur dans promoteToAdminOrModerator");
     return false;
   }
 };
@@ -97,6 +113,7 @@ const promoteModeratorToAdmin = async (data) => {
       return false;
     }
   } catch (error) {
+    console.log("Error in PromoteModeratorToAdmin");
     return false;
   }
 };
@@ -121,7 +138,7 @@ const revokeModerator = async (data) => {
 
         if (existingUser) {
           // User already exists in the Users table
-          console.log("Hey");
+
           // Revoke moderator status by deleting the user record from the Admins table
           return await sequelize.models.Admins.destroy({
             where: { id: moderator.id, token: moderator.token },
@@ -153,7 +170,7 @@ const revokeModerator = async (data) => {
       return false; // User is not a moderator or credentials are invalid
     }
   } catch (error) {
-    console.error("Error in revokeModerator:", error);
+    console.log("Error in revokeModerator");
     return false; // An error occurred during the operation
   }
 };
@@ -206,33 +223,43 @@ const revokeAdmin = async (data) => {
       return false; // User is not a admin or credentials are invalid
     }
   } catch (error) {
-    console.error("Error in revokeModerator:", error);
+    console.error("Error in revokeAdmin");
     return false; // An error occurred during the operation
   }
 };
 //Delete admin data from the data base
 const deleteAmin = async (data) => {
-  return await sequelize.models.Admins.destroy({
-    where: { id: data.id, token: data.token },
-  });
+  try {
+    return await sequelize.models.Admins.destroy({
+      where: { id: data.id, token: data.token },
+    });
+  } catch (error) {
+    console.log("Error in revokeDeletingAdmin");
+    return;
+  }
 };
 
 //auth admin with his known credentiales
 const authAdmin = async ({ phone, password }) => {
-  let admin = await sequelize.models.Admins.findOne({
-    where: {
-      phone: phone,
-    },
-  });
+  try {
+    let admin = await sequelize.models.Admins.findOne({
+      where: {
+        phone: phone,
+      },
+    });
 
-  if (admin !== null) {
-    if (bcrypt.compareSync(password, admin.password)) {
-      return admin;
+    if (admin !== null) {
+      if (bcrypt.compareSync(password, admin.password)) {
+        return admin;
+      } else {
+        return "WRONG_PASSWORD";
+      }
     } else {
-      return "WRONG_PASSWORD";
+      return false;
     }
-  } else {
-    return false;
+  } catch (error) {
+    console.log("Error in revokeAdminAuth");
+    return;
   }
 };
 

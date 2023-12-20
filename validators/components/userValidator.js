@@ -14,7 +14,8 @@ const registerValidator = async (req, res, next) => {
     return next();
   } catch (error) {
     console.log("error in registervalidator");
-    return next(error);
+    return next();
+    // return;
   }
 };
 
@@ -29,7 +30,7 @@ const loginValidator = async (req, res, next) => {
     return next();
   } catch (error) {
     console.log("error in loginvalidator");
-    return next(error);
+    return next();
   }
 };
 
