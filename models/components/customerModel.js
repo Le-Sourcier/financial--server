@@ -1,9 +1,8 @@
 const { DataTypes } = require("sequelize");
-const bcrypt = require("bcrypt");
 const { generateToken, generateUID } = require("./../../helpers/helpers");
 
 module.exports = (sequelize) => {
-  const User = sequelize.define("Users", {
+  const Customers = sequelize.define("Customers", {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
@@ -33,9 +32,12 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
 
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    // The ID of a member who acts as a witness
+    // This is in case of non-payment by the non-member client,
+    // The member client will undertake to pay the amount owed by their protegé
+    witness_id: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
     },
 
     token: {
@@ -44,13 +46,7 @@ module.exports = (sequelize) => {
       defaultValue: generateToken,
       unique: true,
     },
-    // Add more attributes as needed
   });
 
-  // Hook to hash the password and set user ID before creating or updating a user
-  User.beforeCreate(async (user) => {
-    user.password = await bcrypt.hash(user.password, 10);
-  });
-
-  return User;
+  return Customers;
 };

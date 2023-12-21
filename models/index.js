@@ -1,18 +1,24 @@
 const { sequelize } = require("../db");
 
 //################################## USERS models ##################################
-const UserModel = require("./components/userModel");
+const userModel = require("./components/userModel");
+//################################## USERS models ##################################
+const customerModel = require("./components/customerModel");
 //################################## LOAN models ##################################
 const loanModel = require("./components/loanModel");
+//################################## TRANSACTION models ##################################
+const transactionModel = require("./components/transactionModel");
 //################################## ADMINS and MODERATORS models ##################################
 const adminModel = require("./components/adminModel");
 
 //############################## MODEL Initialization #############################
 const initModels = () => {
   //init models
-  UserModel(sequelize);
+  userModel(sequelize);
+  customerModel(sequelize);
   loanModel(sequelize);
   adminModel(sequelize);
+  transactionModel(sequelize);
 
   //Data base init
   sequelize

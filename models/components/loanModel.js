@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
     },
 
     // Identifier of the borrower associated with the loan
-    borrower_id: {
+    account_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
     },
@@ -61,7 +61,7 @@ module.exports = (sequelize) => {
 //       defaultValue: generateUID,
 //     },
 
-//     borrower_id: {
+//     account_id: {
 //       type: DataTypes.BIGINT,
 //       allowNull: false,
 //     },

@@ -131,14 +131,14 @@ router
 
     try {
       if (!token || !id) {
-        const message = serverMessage("NOT_AUTHORIZED");
+        const message = serverMessage("ACCESS_DENIED");
         return res.status(401).json(message);
       }
 
       const user = await getUserByIdAndTk({ id, token });
 
       if (!user) {
-        const message = serverMessage("AUTH_FAILED");
+        const message = serverMessage("NOT_AUTHORIZED");
         return res.status(417).json(message);
       }
 
@@ -152,9 +152,9 @@ router
       const message = serverMessage("DELETED");
       return res.status(200).json(message);
     } catch (error) {
-      console.log(error);
-      // const message = serverMessage("ERROR_SERVER");
-      return res.status(500).json("message");
+      // console.log(error);
+      const message = serverMessage("ERROR_SERVER");
+      return res.status(500).json(message);
     }
   })
   .post("/createTable", async (req, res) => {

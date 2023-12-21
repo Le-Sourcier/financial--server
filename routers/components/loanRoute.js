@@ -34,11 +34,16 @@ router
       // }
 
       const isAdmin = await sequelize.models.Admins.findByPk(id);
-      if (isAdmin) {
+      console.log("Admin", isAdmin);
+      if (!isAdmin) {
         const message = serverMessage("NOT_AUTHORIZED");
         return res.status(401).json(message);
       }
-      const data = { borrower_id: id, loan_amount: amount };
+      const data = {
+        account_id: req.body.account_id,
+        loan_amount: amount,
+        phone: req.body.phone,
+      };
 
       const newLoan = await addLoan(data);
       if (!newLoan) {
@@ -63,18 +68,18 @@ router
       const isAdmin = await sequelize.models.Admins.findByPk(req.body.id);
       const isMember = await sequelize.models.Users.findByPk(req.body.id);
       const isCustomer = await sequelize.models.Loans.findOne({
-        where: { borrower_id: req.body.id },
+        where: { account_id: req.body.id },
       });
 
       if (isAdmin) {
         loans = await sequelize.models.Loans.findAll();
       } else if (isMember) {
         loans = await sequelize.models.Loans.findAll({
-          where: { borrower_id: isMember.id },
+          where: { account_id: isMember.id },
         });
       } else if (isCustomer) {
         loans = await sequelize.models.Loans.findAll({
-          where: { borrower_id: isCustomer.borrower_id },
+          where: { account_id: isCustomer.account_id },
         });
       } else {
         const message = serverMessage("NOT_AUTHORIZED");
@@ -94,7 +99,7 @@ router
 
       //  // Retrieve all loan data for a specific client
       //  const allLoanData = await sequelize.models.Loans.findAll({
-      //   where: { borrower_id: req.body.id },
+      //   where: { account_id: req.body.id },
       // });
 
       // // Calculate the total loan amount borrowed by the client

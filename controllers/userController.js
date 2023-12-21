@@ -69,10 +69,10 @@ const getUserByIdAndTk = async (data) => {
 //Delete user data from the data base
 const deleteUser = async (data) => {
   const loanData = await sequelize.models.Loans.findOne({
-    where: { borrower_id: data.id },
+    where: { account_id: data.id },
   });
   const allLoanData = await sequelize.models.Loans.findAll({
-    where: { borrower_id: data.id },
+    where: { account_id: data.id },
   });
   // if(loanData.amount===)
   // return await sequelize.models.Users.destroy({
