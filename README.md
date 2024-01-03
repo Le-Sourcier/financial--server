@@ -1,22 +1,22 @@
-**Description du Projet - Plateforme de Gestion Financière Transparente**
+**Project Description - Transparent Financial Management Platform**
 
-Ce dépôt GitHub abrite le code source d'une plateforme de gestion financière transparente, développée en utilisant Node.js et Express pour le backend, MySQL comme système de gestion de base de données, et Flutter pour l'interface utilisateur.
+This GitHub repository hosts the source code of a transparent financial management platform developed using Node.js and Express for the backend, MySQL as the database management system, and Flutter for the user interface.
 
-**Caractéristiques Principales :**
-- **Consultation de Comptes :** Les utilisateurs peuvent accéder à une interface conviviale développée en Flutter pour consulter en temps réel l'état de leurs comptes, y compris les soldes actuels, les transactions entrantes et sortantes, ainsi que les détails des opérations liées à leurs comptes.
+**Key Features:**
+- **Account Overview:** Users can access a user-friendly Flutter-based interface to real-time account information, including current balances, incoming and outgoing transactions, as well as details of account-related operations.
 
-- **Historique Complet :** Un historique détaillé des activités financières est disponible, affichant les détails des transactions, y compris les prêts effectués et remboursés. L'historique offre une transparence totale sur les mouvements financiers.
+- **Complete History:** A detailed history of financial activities is available, displaying transaction details, including loans taken and repaid. The history provides complete transparency regarding financial movements.
 
-- **Gestion des Prêts :** Les utilisateurs peuvent suivre de près toutes les informations relatives à leurs prêts, notamment les montants accordés, les taux d'intérêt, et les échéances de remboursement. L'interface utilisateur Flutter assure une expérience interactive et intuitive pour la gestion des prêts.
+- **Loan Management:** Users can closely monitor all information related to their loans, including granted amounts, interest rates, and repayment deadlines. The Flutter user interface ensures an interactive and intuitive experience for loan management.
 
-- **Relevé de Compte :** Des relevés de compte sont générés périodiquement, offrant aux utilisateurs un récapitulatif détaillé de leurs activités financières sur une période donnée.
+- **Account Statements:** Account statements are generated periodically, providing users with a detailed summary of their financial activities over a given period.
 
-**Technologies Utilisées :**
-- **Node.js et Express :** La partie serveur est construite avec Node.js et Express, garantissant une gestion efficace des requêtes et une extensibilité robuste.
+**Technologies Used:**
+- **Node.js and Express:** The server-side is built with Node.js and Express, ensuring efficient request handling and robust scalability.
 
-- **MySQL :** La base de données MySQL est utilisée pour stocker de manière sécurisée et structurée toutes les données financières des utilisateurs.
+- **MySQL:** The MySQL database securely and structurally stores all user financial data.
 
-- **Flutter :** L'interface utilisateur est développée en utilisant Flutter, permettant une expérience utilisateur homogène et réactive sur différentes plateformes.
+- **Flutter:** The user interface is developed using Flutter, enabling a seamless and responsive user experience across different platforms.
 
-**Objectif :**
-Ce projet vise à offrir une plateforme de gestion financière transparente et accessible, où les utilisateurs peuvent visualiser et comprendre facilement leurs activités financières. L'utilisation combinée de technologies éprouvées telles que Node.js, Express, MySQL, et Flutter assure une mise en œuvre efficace et une expérience utilisateur optimale. Nous encourageons la collaboration et les contributions pour enrichir cette plateforme et répondre aux besoins diversifiés des utilisateurs.
+**Objective:**
+This project aims to provide a transparent and accessible financial management platform where users can easily visualize and understand their financial activities. The combined use of proven technologies such as Node.js, Express, MySQL, and Flutter ensures effective implementation and an optimal user experience. We encourage collaboration and contributions to enrich this platform and meet the diverse needs of users.
