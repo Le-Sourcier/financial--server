@@ -27,6 +27,8 @@
     "THEME": "Themes",
     "THEME_SUB_DARK": "Toggle Light Mode for a brighter and visually appealing display, suitable for well-lit environments.",
     "THEME_SUB_LIGHT": "Switch to Dark Mode for a more immersive and comfortable viewing experience in low-light environments.",
+    "APP_COLOR": "Color Options",
+    "APP_COLOR_SUB": "Enhance the aesthetics of your user interface by customizing the color, providing a more advanced and harmonious experience with your preferred shade within the application.",
     "CARD_COLOR_TITLE": "Generated Colors",
     "CARD_COLOR_INFO": "This list of colors has been generated based on your profile picture, showcasing the most prominent colors present in your image.",
     "CARD_COLOR": "Cards color",

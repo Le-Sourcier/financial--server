@@ -39,14 +39,12 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Tsomenenyo',
           debugShowCheckedModeBanner: false,
-          // locale: const Locale("TG"),
           locale: Locale(countryCode.toString()),
           supportedLocales: translator.supportedLocales,
           localizationsDelegates: translator.localizationsDelegates,
           theme: themes.themeData,
           initialRoute: "/home",
           onGenerateRoute: (settings) => route(settings),
-          // home: const LineChartSample2(),
         );
       },
     );

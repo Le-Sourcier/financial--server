@@ -27,6 +27,8 @@
     "THEME": "Thèmes",
     "THEME_SUB_DARK": "Basculez en mode clair pour un affichage plus lumineux et attrayant, adapté aux environnements bien éclairés.",
     "THEME_SUB_LIGHT": "Basculez en mode sombre pour une expérience de visionnage plus immersive et confortable dans des environnements peu éclairés.",
+    "APP_COLOR": "Options Chromatiques",
+    "APP_COLOR_SUB": "Optimisez l'esthétique de votre interface utilisateur en personnalisant la couleur, pour une expérience plus avancée et harmonieuse avec votre teinte préférée au sein de l'application.",
     "CARD_COLOR_TITLE": "Couleurs générées",
     "CARD_COLOR_INFO": "Cette liste de couleurs a été générée à partir de votre photo de profil, mettant en avant les couleurs les plus marquantes présentes dans votre image.",
     "CARD_COLOR": "Couleur des cartes",

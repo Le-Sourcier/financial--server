@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import '../../controllers/index.dart';
 import '../index.dart';
 
-class CardColor extends StatelessWidget {
-  const CardColor({Key? key}) : super(key: key);
+class AppColor extends StatelessWidget {
+  const AppColor({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(

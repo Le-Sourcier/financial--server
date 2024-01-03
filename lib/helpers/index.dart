@@ -7,6 +7,7 @@ import 'package:tsomenenyo/validators/user_validator.dart';
 
 import '../controllers/index.dart';
 import './components/card_color.dart';
+import './components/app_color.dart';
 import '../screens/index.dart';
 import 'index.dart';
 
@@ -102,8 +103,22 @@ List<dynamic> settingItems(BuildContext c) {
       "item": [
         {
           "icon": Icons.palette_outlined,
-          "title": translator.translate("CARD_COLOR").value,
+          "title": translator.translate("APP_COLOR").value,
           "color": Colors.blueGrey,
+          "subtitle": translator.translate("APP_COLOR_SUB").value,
+          "subTrailing": CircleAvatar(
+            radius: 12,
+            backgroundColor: help.appColorDark,
+          ),
+          "onTap": () => help.customBottomSheet(
+                context: c,
+                body: const AppColor(),
+              ),
+        },
+        {
+          "icon": CupertinoIcons.creditcard_fill,
+          "title": translator.translate("CARD_COLOR").value,
+          "color": Colors.lightBlueAccent,
           "subtitle": translator.translate("CARD_COLOR_SUB").value,
           "subTrailing": Container(
             height: 23.0,

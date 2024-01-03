@@ -27,6 +27,8 @@
     "THEME": "Temas",
     "THEME_SUB_DARK": "Activa el Modo Claro para una pantalla más brillante y atractiva, adecuada para entornos bien iluminados.",
     "THEME_SUB_LIGHT": "Cambia al Modo Oscuro para una experiencia de visualización más inmersiva y cómoda en entornos con poca luz.",
+    "APP_COLOR": "Opciones de Color",
+    "APP_COLOR_SUB": "Mejora la estética de tu interfaz de usuario personalizando el color, ofreciendo una experiencia más avanzada y armoniosa con tu tono preferido dentro de la aplicación.",
     "CARD_COLOR_TITLE": "Colores generados",
     "CARD_COLOR_INFO": "Esta lista de colores se ha generado en base a tu foto de perfil, mostrando los colores más prominentes presentes en tu imagen.",
     "CARD_COLOR": "Color de las tarjetas",
