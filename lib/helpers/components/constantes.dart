@@ -131,6 +131,7 @@ class Helps extends GetxController {
   Widget onSendButn({
     final bool isValidate = false,
     required String title,
+    Color? backgroundColor,
   }) {
     var valid = false.obs;
     return Obx(
@@ -142,7 +143,9 @@ class Helps extends GetxController {
             alignment: Alignment.bottomRight,
             child: Card(
               elevation: !valid.value ? 0.3 : null,
-              color: !valid.value ? null : help.appColorDark.withOpacity(0.4),
+              color: !valid.value
+                  ? null
+                  : backgroundColor ?? help.appColorDark.withOpacity(0.4),
               child: InkWell(
                 borderRadius: BorderRadius.circular(10),
                 enableFeedback: false,

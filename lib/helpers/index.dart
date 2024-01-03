@@ -71,7 +71,6 @@ List<dynamic> settingItems(BuildContext c) {
                         help.text(
                             text: translator.translate("CHOOSE_LANG").value,
                             color: Colors.grey),
-
                         ...List.generate(
                           _lanList().length,
                           (index) {
@@ -87,11 +86,6 @@ List<dynamic> settingItems(BuildContext c) {
                             );
                           },
                         ),
-
-                        // _langBtn(
-                        //     lang: "Français", isSelected: isSelected.value),
-                        // _langBtn(lang: "Anglais", isSelected: isSelected.value),
-                        // _langBtn(lang: "Espagnol", isSelected: isSelected.value)
                       ],
                     );
                   },
@@ -228,43 +222,24 @@ Widget _langBtn({
     padding: const EdgeInsets.only(top: 20.0),
     child: GestureDetector(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              if (isSelected)
-                CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  radius: 6,
-                  child: Padding(
-                    padding: EdgeInsets.all(isSelected ? 0 : 3.50),
-                    child: const CircleAvatar(
-                      radius: 5.0,
-                      backgroundColor: Colors.white,
-                    ),
-                  ),
-                )
-              else
-                CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  radius: 6,
-                  child: Padding(
-                    padding: EdgeInsets.all(isSelected ? 0 : 3.50),
-                    child: const CircleAvatar(
-                      radius: 5.0,
-                      backgroundColor: Colors.blue,
-                    ),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: help.text(
-                  text: lang,
-                  size: 17,
-                ),
+          CircleAvatar(
+            backgroundColor: Colors.blue,
+            radius: 6,
+            child: Padding(
+              padding: EdgeInsets.all(isSelected ? 0 : 3.50),
+              child: CircleAvatar(
+                radius: 5.0,
+                backgroundColor: isSelected ? Colors.white : Colors.blue,
               ),
-            ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: help.text(
+              text: lang,
+              size: 17,
+            ),
           ),
           help.icon(
             icon: CupertinoIcons.forward,
@@ -274,9 +249,10 @@ Widget _langBtn({
         ],
       ),
       onTap: () async {
-        return await translator
-            .translateByLang(lang)
-            .then((value) => Get.back());
+        await translator.translateByLang(lang);
+        Get.back();
+
+        // Get.reload(key: "/login", force: true);
       },
     ),
   );

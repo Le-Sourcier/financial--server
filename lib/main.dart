@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       init: Themes(),
       builder: (themes) {
         return GetMaterialApp(
-          title: 'Flutter Demo',
+          title: 'Tsomenenyo',
           debugShowCheckedModeBanner: false,
           // locale: const Locale("TG"),
           locale: Locale(countryCode.toString()),

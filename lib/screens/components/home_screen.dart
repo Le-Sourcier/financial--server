@@ -18,9 +18,9 @@ class HomeScreen extends StatelessWidget {
         final isTablete = constraints.maxWidth <= 780 &&
             (defaultTargetPlatform == TargetPlatform.iOS ||
                 defaultTargetPlatform == TargetPlatform.android);
-        if (isMobile) {
+        if (!isMobile) {
           return const SmallScreen();
-        } else if (isTablete) {
+        } else if (!isTablete) {
           return const Center(
             child: Text('HomeScreen'),
           );
