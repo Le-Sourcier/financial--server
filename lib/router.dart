@@ -9,6 +9,8 @@ Route<dynamic>? route(RouteSettings settings) {
     page: () {
       switch (settings.name) {
         case './':
+          return const SplashScreen();
+        case '/onboard':
           return const OnboradingScreen();
 
         case '/login':

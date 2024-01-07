@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
 
@@ -10,10 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:image_picker/image_picker.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tsomenenyo/helpers/index.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
+import '../../controllers/index.dart';
 
 Helps help = Get.put(Helps());
 
@@ -22,6 +27,8 @@ class Helps extends GetxController {
   var dialCode = "".obs;
   late Color appColorDark;
   late List<Color> cardColor;
+
+  var isoCode = "".obs;
 
   //Image picker init<w
   Rx<XFile?> selectedImage = Rx<XFile?>(null);
@@ -132,6 +139,9 @@ class Helps extends GetxController {
     final bool isValidate = false,
     required String title,
     Color? backgroundColor,
+    double? titleSize,
+    FontWeight? fontWeight,
+    Color? color,
   }) {
     var valid = false.obs;
     return Obx(
@@ -155,7 +165,9 @@ class Helps extends GetxController {
                       horizontal: 25.0, vertical: 10),
                   child: help.text(
                     text: title,
-                    color: valid.value ? null : Colors.grey,
+                    color: valid.value ? color : color ?? Colors.grey,
+                    size: titleSize,
+                    fontWeight: fontWeight,
                   ),
                 ),
               ),
@@ -264,6 +276,109 @@ class Helps extends GetxController {
         // Do nothing if not loading
       };
     }
+  }
+
+  //Custom image picker modal
+  void customImagePickerModal({
+    Widget? leading,
+    Widget? title,
+    bool isScrollControlled = false,
+  }) {
+    Get.bottomSheet(
+      CupertinoActionSheet(
+        title: Obx(
+          () {
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: leading,
+                      ),
+                      Container(child: title),
+                      GestureDetector(
+                        onTap: () => Get.back(),
+                        child: CircleAvatar(
+                          radius: 14,
+                          backgroundColor: Colors.grey.shade800,
+                          child: help.icon(
+                            icon: Icons.close,
+                            size: 13,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Card(
+                  margin: EdgeInsets.zero,
+                  color: !theme.isDark.value ? null : Colors.grey.shade900,
+                  child: SizedBox(
+                    width: Get.width,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 15.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _customButon(
+                              text: translator.translate("TAKE_PIC").value,
+                              icon: CupertinoIcons.camera,
+                              onTap: () => pickImage(ImageSource.camera)
+                                  .whenComplete(() => Get.back()),
+                            ),
+                            _customButon(
+                              text: translator.translate("CHOOSE_PIC").value,
+                              icon: Icons.image_outlined,
+                              onTap: () => pickImage(ImageSource.gallery)
+                                  .whenComplete(() => Get.back()),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+      barrierColor: Colors.transparent,
+      isScrollControlled: isScrollControlled,
+    );
+  }
+
+  Widget _customButon({
+    required String text,
+    required IconData icon,
+    required void Function() onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Obx(
+        () {
+          return ListTile(
+            leading: help.text(
+              text: text,
+              size: 17,
+            ),
+            trailing: help.icon(
+              icon: icon,
+              size: 25,
+              color: !theme.isDark.value ? Colors.grey.shade500 : Colors.white,
+            ),
+          );
+        },
+      ),
+    );
   }
 
   //############################ Image picker ############################
@@ -391,11 +506,142 @@ class Helps extends GetxController {
     );
   }
 
+  List<dynamic> onboardingListItem = [
+    {
+      // "image": "assets/images/save_your_money2.png",
+      "image": "assets/images/save_your_money.png",
+      "title": "Save your money",
+      "subTitle": "Insurance of your deposits with a guarantee"
+    },
+    {
+      "image": "assets/images/money_transfer.png",
+      "title": "Money Transfer",
+      "subTitle": "Fast money transfer with a minimum commission!"
+    },
+    {
+      "image": "assets/images/cash_back.png",
+      "title": "Cash Back",
+      "subTitle": "Get 1% cash back on every purchase!"
+    },
+    {
+      "image": "assets/images/donts_miss_the benefit.png",
+      "title": "Don't miss the benefit!",
+      "subTitle": "Earn on the exchange up to 15% per annum!"
+    },
+    {
+      "image": "assets/images/pay_later.png",
+      "title": "Buy Now Pay Later",
+      "subTitle": "Easier and can pay later"
+    },
+  ];
+
+  List<Color>? onboardingTitleColor;
+
+  Future<List<Color>> getColors(Themes themes) async {
+    List<Color> colorList = [];
+
+    var onboardingColor = await readDataFromStorage("onboardingColor");
+
+    if (onboardingColor != null) {
+      var listColor = [
+        const Color(0xff2f53bb),
+        const Color(0xffe0e2e5),
+        const Color(0xfff8cf7b),
+        const Color(0xff6e95d1),
+        const Color(0xff8879db)
+      ];
+
+      // var colorListx =
+      // List<Color>.from(jsonDecode(onboardingColor.toString()));
+
+      colorList = List.from(listColor);
+      // log("From local storage :$listColor");
+    } else {
+      for (var data in onboardingListItem) {
+        var color0 = await PaletteGenerator.fromImageProvider(
+          AssetImage(data['image']),
+        );
+
+        var dominantColor = color0.dominantColor?.color;
+
+        if (dominantColor != null) {
+          if (!themes.isDark.value &&
+              (dominantColor == const Color(0xffe0e2e5) ||
+                  dominantColor == Colors.grey)) {
+            colorList.add(appColorDark);
+          } else {
+            colorList.add(dominantColor);
+          }
+        }
+      }
+
+      // log("From image");
+      // Store generated OnboardingColors in storage
+      await writeDataToStorage("onboardingColor", colorList);
+    }
+    var countryIsoCode = await getIpAddressAndData("country");
+    var lang = await getIpAddressAndData("country");
+    // await writeDataToStorage("lang", "ar");
+
+    isoCode.value = countryIsoCode;
+    // log("Country Iso Code : ${isoCode.value}");
+
+    return colorList;
+  }
+
+  Future<String> getIpAddressAndData(String value) async {
+    var headers = {
+      'Access-Control-Allow-Origin': '*',
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      'Access-Control-Allow-Headers':
+          'Origin, X-Requested-With, Content-Type, Accept'
+    };
+    try {
+      final response = await http.get(
+        // Uri.parse('https://ipinfo.io/$value'),
+        Uri.parse("https://ipinfo.io/$value/?token=df7b0b1add402e"),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        return response.body.trim();
+      } else {
+        return 'Failed to get IP address';
+      }
+    } catch (e) {
+      if (e.toString().contains('Failed host lookup')) {
+        // errorHandler("NETWORK_CONNECTION_ERROR");
+        log(e.toString());
+      } else {
+        log(e.toString());
+      }
+      return 'Failed to get IP address';
+    }
+  }
+
+// Future<List<Color>> getColors() async {
+  //   List<Color> colorList = [];
+
+  //   for (var data in onboardingListItem) {
+  //     var color0 = await PaletteGenerator.fromImageProvider(
+  //       AssetImage(data['image']),
+  //     );
+
+  //     var dominantColor = color0.dominantColor?.color;
+
+  //     if (dominantColor != null) {
+  //       colorList.add(dominantColor);
+  //     }
+
+  //   }
+
+  //   return colorList;
+  // }
+
   @override
   void onInit() async {
     appColorDark = myColor();
     cardColor = [Colors.amber, appColorDark, Colors.blue, Colors.red];
-
+    // onboardingTitleColor = await getColors();
     storage = const FlutterSecureStorage();
     super.onInit();
   }

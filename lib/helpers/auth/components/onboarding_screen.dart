@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../models/index.dart';
 import '../../index.dart';
 
 class OnboradingScreen extends StatelessWidget {
@@ -8,18 +9,18 @@ class OnboradingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-        init: Skip(),
-        builder: (_) {
-          if (_.isSkip.value) {
-            return const SplashScreen();
-          } else {
-            return const Scaffold(
-              body: Center(
-                child: Text('OnboradingScreen'),
-              ),
-            );
-          }
-        });
+      init: Skip(),
+      builder: (_) {
+        if (_.isSkip.value) {
+          return const FormScreen();
+        } else {
+          return OnbordingModel(
+            items: help.onboardingListItem,
+            onTap: () async => await _.toggleSkip(_),
+          );
+        }
+      },
+    );
   }
 }
 

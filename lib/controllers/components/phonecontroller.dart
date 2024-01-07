@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -15,6 +16,7 @@ class InputPhoneNumber extends StatelessWidget {
   final TextInputAction? textInputAction;
   final bool readOnly;
   final double? hintSize;
+  final Color? inputColor;
 
   const InputPhoneNumber({
     Key? key,
@@ -26,6 +28,7 @@ class InputPhoneNumber extends StatelessWidget {
     this.textInputAction,
     this.readOnly = false,
     this.hintSize,
+    this.inputColor,
   }) : super(key: key);
 
   @override
@@ -36,11 +39,12 @@ class InputPhoneNumber extends StatelessWidget {
         initialCountry: initialCountry,
       ),
       builder: (phone) {
+        var code = "".obs;
         return Obx(
           () {
-            var code = "".obs;
             Color color = theme.isDark.value ? Colors.grey : Colors.black;
             return Card(
+              color: inputColor,
               child: InternationalPhoneNumberInput(
                 spaceBetweenSelectorAndTextField: 0,
                 isEnabled: !readOnly,
@@ -61,12 +65,34 @@ class InputPhoneNumber extends StatelessWidget {
                   }
                 },
                 searchBoxDecoration: InputDecoration(
-                  icon: help.icon(
-                    icon: Icons.search,
+                  contentPadding: const EdgeInsets.all(5),
+                  constraints: BoxConstraints(maxWidth: Get.width / 1.112),
+                  focusColor: Colors.transparent,
+                  filled: true,
+                  fillColor: theme.isDark.value
+                      ? Colors.grey.shade800.withOpacity(0.2)
+                      : Colors.grey.shade700.withOpacity(0.2),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    gapPadding: .4,
+                    borderSide: BorderSide.none,
                   ),
-                  hintText:
-                      'Ex: ${code.value.isEmpty ? phone.number.isoCode : code.value} or +${help.dialCode.value}',
-                  label: help.text(text: 'Search Country'),
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 13,
+                  ),
+                  prefixIcon: help.icon(
+                    icon: CupertinoIcons.search,
+                    size: 18,
+                  ),
+                  hintText: 'Search Country',
+                  // hintText:
+                  // 'Ex: ${code.value.isEmpty ? phone.number.isoCode : code.value} or +${help.dialCode.value}',
+                  // label: help.text(
+                  //   text: 'Search Country',
+                  //   color: Colors.grey,
+                  //   size: 13,
+                  // ),
                 ),
                 onInputValidated: phone.onInputValidated,
                 selectorConfig: SelectorConfig(

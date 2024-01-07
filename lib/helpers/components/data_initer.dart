@@ -13,12 +13,12 @@ Future<void> dataIniter() async {
   // await Hive.box('user').clear();
   //Initialized connection handler and check the network availability
   // isNetworkAvailable = await help.isConnected();
-
+  //Initialize app theme controller
+  theme = Get.put(Themes());
+  help.onboardingTitleColor = await help.getColors(theme);
   //Initialize the translator
   translator = Get.put(Translator());
 
-  //Initialize app theme controller
-  theme = Get.put(Themes());
   help = Get.put(Helps());
 
   // //######################### END ###########################

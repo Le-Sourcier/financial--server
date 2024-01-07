@@ -4,6 +4,7 @@ import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
 
 import '../controllers/index.dart';
+import '../helpers/index.dart';
 
 class CustomForm extends StatelessWidget {
   final TextInputType textInputType;
@@ -15,6 +16,7 @@ class CustomForm extends StatelessWidget {
   final double? hintSize;
   final TextEditingController controller;
   final void Function(String)? onChanged;
+  final Color? inputColor;
   const CustomForm({
     super.key,
     required this.textInputType,
@@ -26,6 +28,7 @@ class CustomForm extends StatelessWidget {
     required this.controller,
     this.hintSize,
     this.onChanged,
+    this.inputColor,
   });
 
   @override
@@ -34,12 +37,17 @@ class CustomForm extends StatelessWidget {
     switch (textInputType) {
       case TextInputType.phone:
       case TextInputType.number:
-        return InputPhoneNumber(
-          controller: controller,
-          showFlags: true,
-          initialCountry: "TG",
-          readOnly: readOnly,
-          hintSize: hintSize,
+        return Obx(
+          () {
+            return InputPhoneNumber(
+              controller: controller,
+              showFlags: true,
+              initialCountry: help.isoCode.value,
+              readOnly: readOnly,
+              hintSize: hintSize,
+              inputColor: inputColor,
+            );
+          },
         );
       case TextInputType.emailAddress:
         return Obx(
@@ -58,6 +66,7 @@ class CustomForm extends StatelessWidget {
               readOnly: readOnly,
               hintSize: hintSize,
               onChanged: onChanged,
+              inputColor: inputColor,
             );
           },
         );
@@ -77,6 +86,7 @@ class CustomForm extends StatelessWidget {
               readOnly: readOnly,
               hintSize: hintSize,
               onChanged: onChanged,
+              inputColor: inputColor,
             );
           },
         );
@@ -92,6 +102,7 @@ class CustomForm extends StatelessWidget {
           readOnly: readOnly,
           hintSize: hintSize,
           onChanged: onChanged,
+          inputColor: inputColor,
         );
       case TextInputType.visiblePassword:
         return Obx(
@@ -106,7 +117,7 @@ class CustomForm extends StatelessWidget {
                   .build(),
               icon: icon ?? Icons.password,
               obscureText: !isVisible.value,
-              lable: label ?? "Password",
+              lable: label ?? translator.translate("PASSWORD").value,
               suffixIcon: GestureDetector(
                 child: _icon(
                   icon: isVisible.value
@@ -122,6 +133,7 @@ class CustomForm extends StatelessWidget {
               readOnly: readOnly,
               hintSize: hintSize,
               onChanged: onChanged,
+              inputColor: inputColor,
             );
           },
         );
@@ -137,6 +149,7 @@ class CustomForm extends StatelessWidget {
           readOnly: readOnly,
           hintSize: hintSize,
           onChanged: onChanged,
+          inputColor: inputColor,
         );
     }
   }
@@ -155,9 +168,11 @@ class CustomForm extends StatelessWidget {
     double? hintSize,
     TextEditingController? controller,
     void Function(String)? onChanged,
+    Color? inputColor,
   }) {
     return Card(
       elevation: elevation,
+      color: inputColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),

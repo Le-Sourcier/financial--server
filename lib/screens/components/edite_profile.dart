@@ -59,101 +59,16 @@ class EditeProfileScreen extends StatelessWidget {
                               : null,
                         ),
                       ),
-                      onTap: () => Get.bottomSheet(
-                        CupertinoActionSheet(
-                          title: Obx(
-                            () {
-                              return Column(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 20.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: profileImage != null
-                                              ? FileImage(
-                                                  File(profileImage.path))
-                                              : null,
-                                        ),
-                                        help.text(
-                                          text: translator
-                                              .translate("EDITE_PROFILE")
-                                              .value,
-                                          size: 15,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () => Get.back(),
-                                          child: CircleAvatar(
-                                            radius: 14,
-                                            backgroundColor:
-                                                Colors.grey.shade800,
-                                            child: help.icon(
-                                              icon: Icons.close,
-                                              size: 13,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Card(
-                                    margin: EdgeInsets.zero,
-                                    color: !theme.isDark.value
-                                        ? null
-                                        : Colors.grey.shade900,
-                                    child: SizedBox(
-                                      width: Get.width,
-                                      // height: Get.height,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20.0),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 15.0, vertical: 15.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              _customButon(
-                                                text: translator
-                                                    .translate("TAKE_PIC")
-                                                    .value,
-                                                icon: CupertinoIcons.camera,
-                                                onTap: () => help
-                                                    .pickImage(
-                                                        ImageSource.camera)
-                                                    .whenComplete(
-                                                        () => Get.back()),
-                                              ),
-                                              _customButon(
-                                                text: translator
-                                                    .translate("CHOOSE_PIC")
-                                                    .value,
-                                                icon: Icons.image_outlined,
-                                                onTap: () => help
-                                                    .pickImage(
-                                                        ImageSource.gallery)
-                                                    .whenComplete(
-                                                        () => Get.back()),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
+                      onTap: () => help.customImagePickerModal(
+                        leading: CircleAvatar(
+                          backgroundImage: profileImage != null
+                              ? FileImage(File(profileImage.path))
+                              : null,
                         ),
-                        barrierColor: Colors.transparent,
+                        title: help.text(
+                          text: translator.translate("EDITE_PROFILE").value,
+                          size: 15,
+                        ),
                         isScrollControlled:
                             MediaQuery.of(context).viewInsets.bottom > 0,
                       ),
@@ -193,31 +108,6 @@ class EditeProfileScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _customButon({
-    required String text,
-    required IconData icon,
-    required void Function() onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Obx(
-        () {
-          return ListTile(
-            leading: help.text(
-              text: text,
-              size: 17,
-            ),
-            trailing: help.icon(
-              icon: icon,
-              size: 25,
-              color: !theme.isDark.value ? Colors.grey.shade500 : Colors.white,
-            ),
-          );
-        },
       ),
     );
   }

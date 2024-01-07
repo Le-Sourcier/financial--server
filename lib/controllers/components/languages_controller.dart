@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,7 +47,6 @@ class Translator extends GetxController {
       _localizedStrings =
           jsonMap.map((key, value) => MapEntry(key, value.toString()));
     } catch (e) {
-      log(e.toString());
       // In case of loading error, load the default language
       String defaultJsonContent =
           await rootBundle.loadString('assets/languages/fr.json');

@@ -19,6 +19,8 @@ void main() async {
       // const AssetImage("assets/1.png"));
       const AssetImage("assets/image2.png"));
 
+  await help.writeDataToStorage("lang", "fr");
+
   // country_code = Get.locale?.languageCode.toString().toLowerCase();
   countryCode = await help.readDataFromStorage("lang");
 
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
           supportedLocales: translator.supportedLocales,
           localizationsDelegates: translator.localizationsDelegates,
           theme: themes.themeData,
-          initialRoute: "/home",
+          initialRoute: "./",
           onGenerateRoute: (settings) => route(settings),
         );
       },
