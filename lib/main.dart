@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -16,15 +14,18 @@ void main() async {
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
   mycolors = await PaletteGenerator.fromImageProvider(
-      // const AssetImage("assets/1.png"));
-      const AssetImage("assets/image2.png"));
+    // const AssetImage("assets/1.png"));
+    const AssetImage("assets/image2.png"),
+    // FileImage(
+    //   File(
+    //     help.selectedImage.value.toString(),
+    //   ),
+    // ),
+  );
 
-  await help.writeDataToStorage("lang", "fr");
+  await help.writeDataToStorage("lang", "es");
 
-  // country_code = Get.locale?.languageCode.toString().toLowerCase();
   countryCode = await help.readDataFromStorage("lang");
-
-  log(countryCode.toString());
 
   await dataIniter().then((value) => runApp(const MyApp()));
 }

@@ -11,7 +11,7 @@ Route<dynamic>? route(RouteSettings settings) {
         case './':
           return const SplashScreen();
         case '/onboard':
-          return const OnboradingScreen();
+          return const OnboardingScreen();
 
         case '/login':
           return const LoginScreen();

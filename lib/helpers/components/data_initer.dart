@@ -9,10 +9,7 @@ Future<void> dataIniter() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UserHiveAdapter());
   userProfile = await Hive.openBox<UserHive>('user');
-  // .whenComplete(() async => await Hive.box('users').clear());
-  // await Hive.box('user').clear();
-  //Initialized connection handler and check the network availability
-  // isNetworkAvailable = await help.isConnected();
+
   //Initialize app theme controller
   theme = Get.put(Themes());
   help.onboardingTitleColor = await help.getColors(theme);

@@ -20,6 +20,8 @@ export './components//bool.dart';
 export './auth/auth.dart';
 export './components/data_initer.dart';
 
+String appVersion = "~ V1.01 ~";
+
 late PaletteGenerator mycolors;
 
 var currentIndex = 0.obs;
@@ -266,8 +268,6 @@ Widget _langBtn({
       onTap: () async {
         await translator.translateByLang(lang);
         Get.back();
-
-        // Get.reload(key: "/login", force: true);
       },
     ),
   );

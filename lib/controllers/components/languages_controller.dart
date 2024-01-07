@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:restart_app/restart_app.dart';
 
 import '../../helpers/index.dart';
 
@@ -14,7 +15,9 @@ class Translator extends GetxController {
   // Define supported locales for the app
   final Iterable<Locale> supportedLocales = const <Locale>[
     Locale('en', 'US'),
-    Locale('fr', 'FR')
+    Locale('fr', 'FR'),
+    Locale('ar', 'AR'),
+    Locale('es', 'ES'),
   ];
 
   // Localizations delegates used for translation
@@ -26,7 +29,7 @@ class Translator extends GetxController {
   ];
 
   // RxString for reactive language code
-  late RxString langCode = "fr".obs; // Initialize with a default value
+  late RxString langCode = "en".obs; // Initialize with a default value
 
   // Map to store localized strings
   Map<String, String> _localizedStrings = {};
@@ -49,7 +52,7 @@ class Translator extends GetxController {
     } catch (e) {
       // In case of loading error, load the default language
       String defaultJsonContent =
-          await rootBundle.loadString('assets/languages/fr.json');
+          await rootBundle.loadString('assets/languages/en.json');
       Map<String, dynamic> defaultJsonMap = json.decode(defaultJsonContent);
       _localizedStrings =
           defaultJsonMap.map((key, value) => MapEntry(key, value.toString()));
@@ -91,7 +94,7 @@ class Translator extends GetxController {
         langCode = "ar";
         break;
       default:
-        langCode = "fr"; // Default language is French if not recognized.
+        langCode = "en"; // Default language is English if not recognized.
     }
 
     // Write the selected language code to storage
@@ -101,14 +104,23 @@ class Translator extends GetxController {
     // Force the app to update to reflect the new language
     Get.forceAppUpdate();
 
+    //Restart application when the selected lang code is arabic
+    if (langCode == "ar") {
+      await Restart.restartApp();
+      // await Restart.restartApp(webOrigin: './');
+    }
+
     return loadData;
   }
 
   // Get the country name based on the current language code
-  // RxString getCountryName() {
-  //   switch (langCode.value) {
-  //     case "fr":
-  //       return "Français".obs;
+  // RxString getLangCode(lang) {
+  //   switch (lang) {
+  //     case "Français":
+  //     case "French":
+  //     case "Francés":
+  //     case "فرنسي":
+  //       return "fr".obs;
   //     case "en":
   //       return "English".obs;
   //     case "es":
@@ -117,6 +129,7 @@ class Translator extends GetxController {
   //       return "Français".obs;
   //   }
   // }
+
   RxString getCountryName() {
     List<String> frenchList = ["Français", "Anglais", "Espagnol", "Arabe"];
     List<String> englishList = ["French", "English", "Spanish", "Arabic"];

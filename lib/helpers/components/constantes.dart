@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
@@ -30,7 +31,7 @@ class Helps extends GetxController {
 
   var isoCode = "".obs;
 
-  //Image picker init<w
+  //Image picker
   Rx<XFile?> selectedImage = Rx<XFile?>(null);
 
   //Image picker for web platform init
@@ -142,6 +143,7 @@ class Helps extends GetxController {
     double? titleSize,
     FontWeight? fontWeight,
     Color? color,
+    TextOverflow? overflow,
   }) {
     var valid = false.obs;
     return Obx(
@@ -168,6 +170,7 @@ class Helps extends GetxController {
                     color: valid.value ? color : color ?? Colors.grey,
                     size: titleSize,
                     fontWeight: fontWeight,
+                    overflow: overflow,
                   ),
                 ),
               ),
@@ -397,6 +400,15 @@ class Helps extends GetxController {
           if (myImage != null && myImage.files.isNotEmpty) {
             Uint8List? fileBytes = myImage.files.first.bytes;
             selectedImageForWeb.value = fileBytes;
+            mycolors = await PaletteGenerator.fromImageProvider(
+              FileImage(
+                File(
+                  selectedImage.value.toString(),
+                ),
+              ),
+            );
+
+            log("Generated Colors : ${mycolors.colors}");
             // update();
             Get.forceAppUpdate();
           } else {
@@ -537,26 +549,34 @@ class Helps extends GetxController {
 
   List<Color>? onboardingTitleColor;
 
+  ///Generate and retrives List of Color from user profile image
   Future<List<Color>> getColors(Themes themes) async {
     List<Color> colorList = [];
 
-    var onboardingColor = await readDataFromStorage("onboardingColor");
+    List<int> colorListInt = [];
+    try {
+      dynamic onboardingColor = await readDataFromStorage("localColor");
 
-    if (onboardingColor != null) {
-      var listColor = [
-        const Color(0xff2f53bb),
-        const Color(0xffe0e2e5),
-        const Color(0xfff8cf7b),
-        const Color(0xff6e95d1),
-        const Color(0xff8879db)
-      ];
+      //Get and convert local int color to color
+      //Parse string data to list
+      var parseData = jsonDecode(onboardingColor.toString());
 
-      // var colorListx =
-      // List<Color>.from(jsonDecode(onboardingColor.toString()));
+      List<dynamic> lstring = parseData;
+      List lint = lstring.map((e) => int.parse(e.toString())).toList();
 
-      colorList = List.from(listColor);
-      // log("From local storage :$listColor");
-    } else {
+      var storegeColor = lint.map((value) => Color(value)).toList();
+
+      colorList = List.from(storegeColor);
+
+      // log("Color from local storage");
+
+      //Get country ISO code
+      var countryIsoCode = await getIpAddressAndData("country");
+
+      isoCode.value = countryIsoCode;
+
+      return colorList;
+    } catch (e) {
       for (var data in onboardingListItem) {
         var color0 = await PaletteGenerator.fromImageProvider(
           AssetImage(data['image']),
@@ -569,24 +589,22 @@ class Helps extends GetxController {
               (dominantColor == const Color(0xffe0e2e5) ||
                   dominantColor == Colors.grey)) {
             colorList.add(appColorDark);
+            colorListInt.add(appColorDark.value);
           } else {
             colorList.add(dominantColor);
+            colorListInt.add(dominantColor.value);
           }
         }
+
+        // Store generated OnboardingColors in storage
+        await writeDataToStorage("localColor", colorListInt);
+        // log("Generated colors");
       }
+      var countryIsoCode = await getIpAddressAndData("country");
 
-      // log("From image");
-      // Store generated OnboardingColors in storage
-      await writeDataToStorage("onboardingColor", colorList);
+      isoCode.value = countryIsoCode;
+      return colorList;
     }
-    var countryIsoCode = await getIpAddressAndData("country");
-    var lang = await getIpAddressAndData("country");
-    // await writeDataToStorage("lang", "ar");
-
-    isoCode.value = countryIsoCode;
-    // log("Country Iso Code : ${isoCode.value}");
-
-    return colorList;
   }
 
   Future<String> getIpAddressAndData(String value) async {
@@ -618,30 +636,11 @@ class Helps extends GetxController {
     }
   }
 
-// Future<List<Color>> getColors() async {
-  //   List<Color> colorList = [];
-
-  //   for (var data in onboardingListItem) {
-  //     var color0 = await PaletteGenerator.fromImageProvider(
-  //       AssetImage(data['image']),
-  //     );
-
-  //     var dominantColor = color0.dominantColor?.color;
-
-  //     if (dominantColor != null) {
-  //       colorList.add(dominantColor);
-  //     }
-
-  //   }
-
-  //   return colorList;
-  // }
-
   @override
   void onInit() async {
     appColorDark = myColor();
     cardColor = [Colors.amber, appColorDark, Colors.blue, Colors.red];
-    // onboardingTitleColor = await getColors();
+
     storage = const FlutterSecureStorage();
     super.onInit();
   }

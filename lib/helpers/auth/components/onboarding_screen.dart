@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '../../../models/index.dart';
 import '../../index.dart';
 
-class OnboradingScreen extends StatelessWidget {
-  const OnboradingScreen({Key? key}) : super(key: key);
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetBuilder(

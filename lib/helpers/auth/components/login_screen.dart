@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         help.text(
                           text: translator.translate("SIGN_IN_TITLE").value,
-                          size: 30,
+                          size: 26.0,
                           fontWeight: FontWeight.bold,
                           color: theme.isDark.value
                               ? Colors.white70
@@ -78,22 +78,30 @@ class LoginScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
-                          child: help.text(
-                            text: translator.translate("SIGN_IN_REF").value,
-                            color: Colors.blue,
+                        Flexible(
+                          child: GestureDetector(
+                            child: help.text(
+                              text: translator.translate("SIGN_IN_REF").value,
+                              color: Colors.blue,
+                              overflow: TextOverflow.ellipsis,
+                              size: 13,
+                            ),
+                            onTap: () {
+                              controller?.jumpToPage(1);
+                            },
                           ),
-                          onTap: () {
-                            controller?.jumpToPage(1);
-                          },
                         ),
-                        help.onSendButn(
-                          title: translator.translate("SIGN_IN").value,
-                          titleSize: 15,
-                          backgroundColor: help.color,
-                          fontWeight: FontWeight.bold,
-                          isValidate: true,
-                          color: Colors.white,
+                        Flexible(
+                          // flex: 2,
+                          child: help.onSendButn(
+                            title: translator.translate("SIGN_IN").value,
+                            titleSize: 13,
+                            backgroundColor: help.color,
+                            fontWeight: FontWeight.bold,
+                            isValidate: true,
+                            color: Colors.white,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),

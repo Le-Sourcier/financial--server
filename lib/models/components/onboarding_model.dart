@@ -2,7 +2,6 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tsomenenyo/screens/components/home_screen.dart';
 
 import '../../helpers/index.dart';
 
@@ -53,15 +52,6 @@ class OnbordingModel extends StatelessWidget {
                             children: [
                               Column(
                                 children: [
-                                  // if (currentIndex.value == i + 1)
-                                  //   Card(
-                                  //     color: Colors.red,
-                                  //     child: SizedBox(
-                                  //       height: 15.0,
-                                  //       child: help.text(text: "dd"),
-                                  //     ),
-                                  //   ),
-                                  // if (currentIndex.value == i + 1)
                                   if (currentIndex.value == items.length - 1)
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -82,15 +72,6 @@ class OnbordingModel extends StatelessWidget {
                                               color: Colors.white,
                                             ),
                                           ),
-                                          // onTap: () {
-                                          //   Get.offAll(
-                                          //     () => const HomeScreen(),
-                                          //     routeName: "/home",
-                                          //     transition: Transition.topLevel,
-                                          //     curve:
-                                          //         Curves.fastLinearToSlowEaseIn,
-                                          //   );
-                                          // },
                                         ),
                                       ),
                                     ),
@@ -103,7 +84,6 @@ class OnbordingModel extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 6.0),
                                     child: FadeInUp(
-                                      // key: UniqueKey(),
                                       child: help.text(
                                         text: data["subTitle"],
                                         color: Colors.grey,
@@ -112,25 +92,6 @@ class OnbordingModel extends StatelessWidget {
                                   ),
                                 ],
                               ),
-
-                              // ListTile(
-                              //   title: FadeInLeft(
-                              //     // key: UniqueKey(),
-                              //     child: help.text(
-                              //       text: data["title"],
-                              //       size: 25.0,
-                              //       fontWeight: FontWeight.bold,
-                              //       color: color,
-                              //     ),
-                              //   ),
-                              //   subtitle: FadeInUp(
-                              //     // key: UniqueKey(),
-                              //     child: help.text(
-                              //       text: data["subTitle"],
-                              //       color: Colors.grey,
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
