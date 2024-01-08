@@ -23,7 +23,7 @@ void main() async {
     // ),
   );
 
-  await help.writeDataToStorage("lang", "es");
+  // await help.writeDataToStorage("lang", "es");
 
   countryCode = await help.readDataFromStorage("lang");
 
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
           supportedLocales: translator.supportedLocales,
           localizationsDelegates: translator.localizationsDelegates,
           theme: themes.themeData,
-          initialRoute: "./",
+          initialRoute: "/home",
           onGenerateRoute: (settings) => route(settings),
         );
       },

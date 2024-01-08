@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +71,7 @@ List<dynamic> settingItems(BuildContext c) {
               CupertinoAlertDialog(
                 content: Obx(
                   () {
+                    translator.getCountryName().value;
                     return Column(
                       children: [
                         help.text(
@@ -78,15 +81,13 @@ List<dynamic> settingItems(BuildContext c) {
                           _lanList().length,
                           (index) {
                             var lang = _lanList()[index];
-                            return GetBuilder<Translator>(
-                              init: Translator(),
-                              builder: (c) {
-                                return _langBtn(
-                                  lang: lang,
-                                  isSelected: lang == c.getCountryName().value,
-                                );
-                              },
-                            );
+                            return Obx(() {
+                              return _langBtn(
+                                lang: lang,
+                                isSelected:
+                                    lang == translator.getCountryName().value,
+                              );
+                            });
                           },
                         ),
                       ],
@@ -217,6 +218,7 @@ List<String> _lanList() {
   List<String> englishList = ["French", "English", "Spanish", "Arabic"];
   List<String> spanishList = ["Francés", "Inglés", "Español", "Árabe"];
   List<String> arabicList = ["فرنسي", "إنجليزي", "إسباني", "عربي"];
+
   switch (translator.langCode.value) {
     case "fr":
       return frenchList;
@@ -227,7 +229,7 @@ List<String> _lanList() {
     case "ar":
       return arabicList;
     default:
-      return frenchList;
+      return englishList;
   }
 }
 
@@ -237,39 +239,54 @@ Widget _langBtn({
 }) {
   return Padding(
     padding: const EdgeInsets.only(top: 20.0),
-    child: GestureDetector(
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.blue,
-            radius: 6,
-            child: Padding(
-              padding: EdgeInsets.all(isSelected ? 0 : 3.50),
-              child: CircleAvatar(
-                radius: 5.0,
-                backgroundColor: isSelected ? Colors.white : Colors.blue,
-              ),
+    child: Obx(() {
+      return GestureDetector(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor:
+                      theme.isDark.value ? Colors.white : Colors.black,
+                  radius: 6,
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                        !isSelected ? 0 : (theme.isDark.value ? 2.50 : 3.50)),
+                    child: CircleAvatar(
+                      radius: 5.0,
+                      backgroundColor: !isSelected
+                          ? Colors.white
+                          : theme.isDark.value
+                              ? Colors.black
+                              : Colors.white,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: help.text(
+                    text: lang,
+                    size: 17,
+                  ),
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0),
-            child: help.text(
-              text: lang,
-              size: 17,
-            ),
-          ),
-          help.icon(
-            icon: CupertinoIcons.forward,
-            color: Colors.grey,
-            size: 16,
-          )
-        ],
-      ),
-      onTap: () async {
-        await translator.translateByLang(lang);
-        Get.back();
-      },
-    ),
+            help.icon(
+              icon: CupertinoIcons.forward,
+              color: Colors.grey,
+              size: 16,
+            )
+          ],
+        ),
+        onTap: () async {
+          await translator.translateByLang(lang);
+          // await Get.forceAppUpdate();
+          Get.back();
+          // Get.engine.buildOwner;
+        },
+      );
+    }),
   );
 }
 

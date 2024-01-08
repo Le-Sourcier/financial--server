@@ -42,7 +42,8 @@ class CustomForm extends StatelessWidget {
             return InputPhoneNumber(
               controller: controller,
               showFlags: true,
-              initialCountry: help.isoCode.value,
+              initialCountry:
+                  help.isoCode.value.isEmpty ? help.isoCode.value : "US",
               readOnly: readOnly,
               hintSize: hintSize,
               inputColor: inputColor,

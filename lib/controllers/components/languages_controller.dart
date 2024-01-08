@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:restart_app/restart_app.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../../helpers/index.dart';
 
@@ -66,49 +65,42 @@ class Translator extends GetxController {
 
   // Translate the application by the provided language
   Future<void> translateByLang(String language) async {
-    String langCode;
-
     switch (language) {
       case "الفرنسية":
       case "French":
       case "Francés":
       case "Français":
-        langCode = "fr";
+        langCode = "fr".obs;
         break;
       case "الإسبانية":
       case "Spanish":
       case "Español":
       case "Espagnol":
-        langCode = "es";
+        langCode = "es".obs;
         break;
       case "الإنجليزية":
       case "English":
       case "Inglés":
       case "Anglais":
-        langCode = "en";
+        langCode = "en".obs;
         break;
       case "عربي":
       case "Arabic":
       case "Árabe":
       case "Arabe":
-        langCode = "ar";
+        langCode = "ar".obs;
         break;
       default:
-        langCode = "en"; // Default language is English if not recognized.
+        langCode = "en".obs; // Default language is English if not recognized.
     }
 
     // Write the selected language code to storage
-    await help.writeDataToStorage("lang", langCode);
-    var loadData = await load(langCode: langCode);
+    await help.writeDataToStorage("lang", langCode.value);
+
+    var loadData = await load(langCode: langCode.value);
 
     // Force the app to update to reflect the new language
     Get.forceAppUpdate();
-
-    //Restart application when the selected lang code is arabic
-    if (langCode == "ar") {
-      await Restart.restartApp();
-      // await Restart.restartApp(webOrigin: './');
-    }
 
     return loadData;
   }
@@ -160,7 +152,7 @@ class Translator extends GetxController {
         } else if (langCode.value == "ar") {
           return englishList[3].obs;
         } else {
-          return englishList[0].obs;
+          return englishList[1].obs;
         }
 
       case "es":
@@ -173,7 +165,7 @@ class Translator extends GetxController {
         } else if (langCode.value == "ar") {
           return spanishList[3].obs;
         } else {
-          return spanishList[0].obs;
+          return spanishList[2].obs;
         }
 
       case "ar":
@@ -186,10 +178,20 @@ class Translator extends GetxController {
         } else if (langCode.value == "ar") {
           return arabicList[3].obs;
         } else {
-          return arabicList[0].obs;
+          return arabicList[3].obs;
         }
       default:
-        return frenchList[0].obs;
+        if (langCode.value == "fr") {
+          return englishList[0].obs;
+        } else if (langCode.value == "en") {
+          return englishList[1].obs;
+        } else if (langCode.value == "es") {
+          return englishList[2].obs;
+        } else if (langCode.value == "ar") {
+          return englishList[3].obs;
+        } else {
+          return englishList[1].obs;
+        }
     }
   }
 
