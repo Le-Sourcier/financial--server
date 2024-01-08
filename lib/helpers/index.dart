@@ -247,8 +247,9 @@ Widget _langBtn({
             Row(
               children: [
                 CircleAvatar(
-                  backgroundColor:
-                      theme.isDark.value ? Colors.white : Colors.black,
+                  backgroundColor: theme.isDark.value
+                      ? Colors.white
+                      : Colors.grey.shade900.withOpacity(0.8),
                   radius: 6,
                   child: Padding(
                     padding: EdgeInsets.all(
@@ -257,9 +258,9 @@ Widget _langBtn({
                       radius: 5.0,
                       backgroundColor: !isSelected
                           ? Colors.white
-                          : theme.isDark.value
-                              ? Colors.black
-                              : Colors.white,
+                          : (theme.isDark.value
+                              ? Colors.grey.shade900.withOpacity(0.8)
+                              : Colors.white),
                     ),
                   ),
                 ),
